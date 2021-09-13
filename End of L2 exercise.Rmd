@@ -1,0 +1,61 @@
+---
+title: "End of L2 exercise"
+author: "Geoffrey Millard"
+date: "9/13/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Retrieving USGS and EPA data
+
+The `dataRetrieval` package works very well if you know the site numbers from which you want to pull data.  You can also get information about the data available at a site and detailed location information.  We are interested in pulling data from two sites for day two of our exercise: `c('0134277112', '0134277114')`. 
+
+Site 112 was treated with Calcium Carbonate on October 1st 2013 and site 114 is a nearby reference site.
+
+We don't really want all the data from these two sites, so we can specify a few different parameters `c('00403', '00409','00681', '00945', '50287', '50285')`: pH, Alkalinity, Dissolved Organic Carbon, Sulfate, Mercury, Methylmercury.
+
+The default NWIS import will keep the parameter codes, which are not incredibly helpful, so you are going to want to replace the code with an actual name.  While your at it, might as well replace the site codes with a more descriptive name as well.
+
+
+
+```{r pull from NWIS}
+library(dataRetrieval) 
+```
+
+## Well la dee da
+
+```{r}
+#USGS and EPA dataset retrieval package
+# install.packages("dataRetrieval")
+library(dataRetrieval) 
+#click on "Packages" tab to see functions available in the dataRetrival package
+
+#these are the USGS sites upstream from Honnedaga Lake, NY that we found in the browser
+sites <- c('0134277112', '0134277114')
+
+#detailed location information about the site
+# readNWISsite(c('0134277112', '0134277114'))
+
+#whatNWISdata displays the datasets available at each site
+available <- whatNWISdata(siteNumber=c('0134277112', '0134277114'))
+actual <- readNWISpCode(parameterCd = available$parm_cd) #interpret parameter codes
+want <- c('00403', '00409','00681', '00945', '50287', '50285') #we want: pH, Alkalinity, DOC, DSO4, DHg and DMeHg
+data <- readNWISqw(siteNumbers = sites, parameterCd=want) #get the data
+codes <- readNWISpCode(parameterCd = unique(data$parm_cd)) #confirms that we got what we wanted, shows UNITS!
+
+data <- data %>% mutate(Analyte = recode(parm_cd, 
+                         '00403'  = 'pH',
+                         '00409'  = 'Alkalinity',
+                         '00681' = "DOC", 
+                         '00945' = "SO4", 
+                         '50287' = "Hg", 
+                         '50285' = "MeHg"))
+
+data <- data %>% mutate(Site = recode(site_no, 
+                         '0134277112' = "Reference", 
+                         '0134277114' = "Treated"))
+```
+
