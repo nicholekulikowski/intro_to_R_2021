@@ -2,7 +2,9 @@
 title: "End of L2 exercise"
 author: "Geoffrey Millard"
 date: "9/13/2021"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -17,20 +19,26 @@ Site 112 was treated with Calcium Carbonate on October 1st 2013 and site 114 is 
 
 We don't really want all the data from these two sites, so we can specify a few different parameters `c('00403', '00409','00681', '00945', '50287', '50285')`: pH, Alkalinity, Dissolved Organic Carbon, Sulfate, Mercury, Methylmercury.
 
-The default NWIS import will keep the parameter codes, which are not incredibly helpful, so you are going to want to replace the code with an actual name.  While your at it, might as well replace the site codes with a more descriptive name as well.
+The default NWIS import will keep the parameter codes, which are not incredibly helpful, so you are going to want to replace the code with an actual name.  While you're at it, might as well replace the site codes with a more descriptive name as well.
+
+We don't need to keep all these columns, we are really only interested in: site_no, sample_dt, parm_cd and result_va.  Can you made a new df with just these variables?
+
+*Bonus Challenge* This dataset is a pre/post Treatment response.  Can you add in a treatment column based on the sample_dt? 
+
+Treatment Period | Date Range 
+---------------- | ----------------------
+pre-treatment    | < 2013-10-1         
+transitional     | 2013-10-1 < 2014-4-1
+post-treatment   | > 2014-4-1
 
 
+Here is some code to retrieve the data we want:
 
-```{r pull from NWIS}
-library(dataRetrieval) 
-```
-
-## Well la dee da
-
-```{r}
+```{r pull from NWIS, warning=FALSE}
 #USGS and EPA dataset retrieval package
 # install.packages("dataRetrieval")
-library(dataRetrieval) 
+library(dataRetrieval)
+
 #click on "Packages" tab to see functions available in the dataRetrival package
 
 #these are the USGS sites upstream from Honnedaga Lake, NY that we found in the browser
@@ -44,9 +52,16 @@ available <- whatNWISdata(siteNumber=c('0134277112', '0134277114'))
 actual <- readNWISpCode(parameterCd = available$parm_cd) #interpret parameter codes
 want <- c('00403', '00409','00681', '00945', '50287', '50285') #we want: pH, Alkalinity, DOC, DSO4, DHg and DMeHg
 data <- readNWISqw(siteNumbers = sites, parameterCd=want) #get the data
-codes <- readNWISpCode(parameterCd = unique(data$parm_cd)) #confirms that we got what we wanted, shows UNITS!
+codes <- readNWISpCode(parameterCd = unique(data$parm_cd)) #confirms that we got what we wanted, shows UNITS! 
+```
 
-data <- data %>% mutate(Analyte = recode(parm_cd, 
+
+```{r, include=FALSE}
+library(tidyverse)
+
+data1 <- data
+
+data1 <- data1 %>% mutate(Analyte = recode(parm_cd, 
                          '00403'  = 'pH',
                          '00409'  = 'Alkalinity',
                          '00681' = "DOC", 
@@ -54,8 +69,15 @@ data <- data %>% mutate(Analyte = recode(parm_cd,
                          '50287' = "Hg", 
                          '50285' = "MeHg"))
 
-data <- data %>% mutate(Site = recode(site_no, 
+data1 <- data1 %>% mutate(Site = recode(site_no, 
                          '0134277112' = "Reference", 
                          '0134277114' = "Treated"))
+colnames(data1)
+data1 <- data1 %>% dplyr::select(Site, Date=sample_dt, Analyte, Result=result_va)
+
+data1$Treatment <- NA
+data1$Treatment[ data1$Date < ymd('2013-10-1')  ] <- 1
+data1$Treatment[ data1$Date >= ymd('2013-10-1') ] <- 2
+data1$Treatment[ data1$Date > mdy('2014-02-28') ] <- 3  # error because I am using the wrong lubridate function
 ```
 
