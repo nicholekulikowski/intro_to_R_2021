@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
   - Linear regression and correlation (`lm()`, `cor()`)
   - Shapiro-Wilks, normality test (personally, I failed this test)
   - ANOVA
-  - Tukey Honest Square Difference
+  - Tukey Honestly Significant Difference
   Time allowing
   - ANOVA contrasts
 
@@ -39,6 +39,7 @@ If we cover everything these are the packages we will need.  I'll introduce them
 ```{r}
 library(dataRetrieval)
 library(tidyverse)
+library(tidyselect)
 library(lubridate) # Part of tidyverse
 library(kableExtra)
 library(broom)
@@ -83,37 +84,69 @@ data <- data %>% mutate(Analyte = recode(parm_cd,
 data <- data %>% mutate(Site = recode(site_no, 
                          '0134277112' = "Reference", 
                          '0134277114' = "Treated"))
+colnames(data)
+data1 <- data %>% dplyr::select(Site, Date=sample_dt, Analyte, Result=result_va)
+
+data1$Treatment <- NA
+data1$Treatment[ data1$Date < ymd('2013-10-1')  ] <- 1
+data1$Treatment[ data1$Date >= ymd('2013-10-1') ] <- 2
+data1$Treatment[ data1$Date > ymd('2014-02-28') ] <- 3  # error because I am using the wrong lubridate function
 ```
 
 
+## Exporting already?
+
+Maybe this is all you needed to do and now your sharing it with a colleague who is going to do everything else (wouldn't that be lovely!).  If you are working in an Rmarkdown, the html output copies into MS Office applications very nicely, or you can output to a word document.  
+
+If you want something systematic (eg. because your doing this with lots of datasets) the baseR `write.csv` function is pretty useful.  You do need to specify the dataframe and the filename.
+
+```{r}
+write.csv(data1, 'Simplified_long_format.csv')
+```
+
+
+## That thing everybody loves: dating
+
+The lubridate package is a huge improvement over managing dates with baseR (eg. baseR months go from 0-11, so don't get tripped up!), because it makes it easier to separate days, months and years.  
+
+First, Lets check and see if our Date data is actually a date.
+
+```{r check data class}
+str(data1$Date) # can also use this on the whole data frame, but that can be hard to follow
+
+class(data1$Date)
+```
 ## Look at these: Summary stats
 
 Now that we have cleaned data, we want to take a quick look at it.  The fastest, simplest method is called 'piping' (`%>%`) and is part of the `dplyr` package.  We can use this to generate an overall average for each site, analyte or any other variable with a column in the data frame.
 
-```{r}
-table1 <- data %>% group_by(Site, Analyte) %>% summarize(average=mean(result_va, na.rm = T))
-table1
+```{r summary table}
+Table1 <- data1[data1$Analyte=='DOC',] %>%
+  group_by(Site, Analyte, year(Date)) %>% 
+  summarize(average=mean(Result), n=n())
+Table1
 ```
 
 This is wonderful, but does not actually look like a publishable table.  `kableExtra` to save the day!
 
-```{r}
-kable(table1) %>% kable_styling(bootstrap_options = c('striped', 'hover'), full_width = F)
+```{r kable summary table}
+kable(Table1) %>% 
+  kable_styling(bootstrap_options = c('striped', 'hover'), full_width = F)
 ```
 
 
 # Exercise break 1
 
-Can you generate the standard deviation, maximum and minimum values, and the n-value?
+For each site, analyte, and month, generate the mean, standard deviation, maximum and minimum values, and the n-value?
 
 
-```{r}
-Table2 <- data %>% 
-  group_by(Site, Analyte) %>% 
-  summarize(average=mean(result_va, na.rm=T), 
-            stdv=sd(result_va, na.rm=T),
-            max=max(result_va, na.rm=F), 
-            min=min(result_va, na.rm=T), 
+```{r Solution Ex. 1}
+Table2 <- data1 %>% 
+  group_by(Site, Analyte, month(Date)) %>% 
+  summarize(average=mean(Result, na.rm=T), 
+            stdv=sd(Result, na.rm=T),
+            max=max(Result, na.rm=T), 
+            min=min(Result, na.rm=T), 
             n = n())
 Table2
 Table2 %>% kable() %>% 
@@ -126,45 +159,63 @@ While this is fun, I can think of no application where we would actually want to
 
 The lubridate package is a huge improvement over managing dates with baseR (eg. baseR months go from 0-11, so don't get tripped up!), because it makes it easier to separate days, months and years.  
 
-```{r}
-Table3 <- data[data$Analyte=='DOC',] %>%
-  group_by(Site, Analyte, year(sample_dt)) %>% 
-  summarize(average=mean(result_va), n=n())
-Table3
+First, Lets check and see if our Date data is actually a date.
 
-Table4 <- data[data$Analyte=='DOC',] %>%
-  group_by(Site, Analyte, month(sample_dt)) %>% 
-  summarize(average=mean(result_va), n=n())
+
+
+```{r summarize by year and month, results=F}
+
+
+Table4 <- data1[data1$Analyte=='DOC',] %>%
+  group_by(Site, Analyte, month(Date)) %>% 
+  summarize(average=mean(Result), n=n())
 Table4
+```
 
+
+```{r kable summarize by year and month}
 Table4 %>% kable() %>% 
-kable_styling(bootstrap_options = c('striped', 'hover'), full_width = F)
+kable_styling(bootstrap_options = c('striped', 'hover', 'bordered'), full_width = F)
 ```
 
-We want to use dates to separate out the pre-treatment, transitional, and post-treatment time periods in this dataset.  first, lets check if R recongnized sample_dt as a date.  There are two ways that I like:
+We want to use dates to separate out the pre-treatment, transitional, and post-treatment time periods in this dataset.  I am most comfortable using baseR syntax for this.
 
-```{r}
-str(data$sample_dt) # can also use this on the whole data frame, but that can be hard to follow
+## Excercise Break 2
 
-class(data$sample_dt)
+```{r treatment variable}
+data1$Treatment <- NA
+data1$Treatment[ data1$Date < ymd('2013-10-1')  ] <- 1
+data1$Treatment[ data1$Date >= ymd('2013-10-1') ] <- 2
+data1$Treatment[ data1$Date > mdy('2014-02-28') ] <- 3  # error because I am using the wrong lubridate function
 ```
 
-
-```{r}
-data$Treatment <- NA
-data$Treatment[ data$sample_dt < mdy('2013-10-1')  ] <- 1
-data$Treatment[ data$sample_dt >= mdy('2013-10-1') ] <- 2
-data$Treatment[ data$sample_dt > mdy('2014-02-28') ] <- 3
+```{r corrected Treatment variable, echo=F}
+data1$Treatment[ data1$Date > ymd('2014-02-28') ] <- 3
 ```
+
 
 It would also be nice to set this as a factor or categorical variable.
 
-```{r}
-data$Treatment <- factor(data$Treatment, levels = c(1, 2, 3), labels = c('Pre-Treatment', 'Transitional', 'Post-Treatment'))
-levels(data$Treatment)
+```{r factor Treatment}
+data1$Treatment <- factor(data1$Treatment, levels = c(1, 2, 3), labels = c('Pre-Treatment', 'Transitional', 'Post-Treatment'), ordered = T)
+head(data1$Treatment)
 ```
 
 
-## Exercise break 2
+## Exercise break 3
 
-Can you generate a nice summary table for each analyte in each treatment period?
+Can you generate a nice summary table for each analyte in each treatment period? (Time depending)
+
+```{r}
+Table5 <- data1 %>% 
+  group_by(Treatment, Analyte, Site) %>% 
+  summarize(average=mean(Result, na.rm=T), 
+            stdv=sd(Result, na.rm=T),
+            max=max(Result, na.rm=T), 
+            min=min(Result, na.rm=T), 
+            n = n())
+Table5
+Table5 %>% kable() %>% 
+kable_styling(bootstrap_options = c('striped', 'hover'), full_width = F)
+```
+
