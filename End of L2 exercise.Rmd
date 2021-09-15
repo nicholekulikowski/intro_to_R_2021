@@ -21,7 +21,15 @@ We don't really want all the data from these two sites, so we can specify a few 
 
 The default NWIS import will keep the parameter codes, which are not incredibly helpful, so you are going to want to replace the code with an actual name.  While you're at it, might as well replace the site codes with a more descriptive name as well.
 
-We don't need to keep all these columns, we are really only interested in: site_no, sample_dt, parm_cd and result_va.  Can you made a new df with just these variables?
+We don't need to keep all these columns, we are really only interested in: site_no, sample_dt, sample_tm, parm_cd and result_va.  Can you make a new df with just these variables?
+
+**Action items**
+
+- replace site_no and parm_cd with descriptive names
+
+- create a new, simplified dataframe
+
+
 
 *Bonus Challenge* This dataset is a pre/post Treatment response.  Can you add in a treatment column based on the sample_dt? 
 
@@ -41,10 +49,10 @@ library(dataRetrieval)
 
 #click on "Packages" tab to see functions available in the dataRetrival package
 
-#these are the USGS sites upstream from Honnedaga Lake, NY that we found in the browser
+#these are USGS sites upstream from Honnedaga Lake, NY 
 sites <- c('0134277112', '0134277114')
 
-#detailed location information about the site
+#detailed location information about the sites
 # readNWISsite(c('0134277112', '0134277114'))
 
 #whatNWISdata displays the datasets available at each site
@@ -58,6 +66,7 @@ codes <- readNWISpCode(parameterCd = unique(data$parm_cd)) #confirms that we got
 
 ```{r, include=FALSE}
 library(tidyverse)
+library(lubridate)
 
 data1 <- data
 
@@ -73,11 +82,11 @@ data1 <- data1 %>% mutate(Site = recode(site_no,
                          '0134277112' = "Reference", 
                          '0134277114' = "Treated"))
 colnames(data1)
-data1 <- data1 %>% dplyr::select(Site, Date=sample_dt, Analyte, Result=result_va)
+data1 <- data1 %>% dplyr::select(Site, Date=sample_dt, Time=sample_tm, Analyte, Result=result_va)
 
 data1$Treatment <- NA
 data1$Treatment[ data1$Date < ymd('2013-10-1')  ] <- 1
 data1$Treatment[ data1$Date >= ymd('2013-10-1') ] <- 2
-data1$Treatment[ data1$Date > mdy('2014-02-28') ] <- 3  # error because I am using the wrong lubridate function
+data1$Treatment[ data1$Date > ymd('2014-02-28') ] <- 3  # error because I am using the wrong lubridate function
 ```
 
