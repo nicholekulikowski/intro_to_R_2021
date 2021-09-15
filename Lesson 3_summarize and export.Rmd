@@ -65,10 +65,10 @@ sites <- c('0134277112', '0134277114')
 #whatNWISdata displays the datasets available at each site
 available <- whatNWISdata(siteNumber=c('0134277112', '0134277114'))
 actual <- readNWISpCode(parameterCd = available$parm_cd) #interpret parameter codes
-want <- c('00681', '00945', '50287', '50285') #we want: DOC, DSO4, DHg and DMeHg
+want <- c('00681', '00945', '50287', '50285', '00403', '00409') #we want: DOC, DSO4, DHg and DMeHg
 data <- readNWISqw(siteNumbers = sites, parameterCd=want) #get the data
 codes <- readNWISpCode(parameterCd = unique(data$parm_cd)) #confirms that we got what we wanted, shows UNITS!
-View(data)
+# View(data)
 ```
 
 
@@ -85,23 +85,56 @@ data <- data %>% mutate(Site = recode(site_no,
                          '0134277112' = "Reference", 
                          '0134277114' = "Treated"))
 colnames(data)
-data1 <- data %>% dplyr::select(Site, Date=sample_dt, Analyte, Result=result_va)
+data1 <- data %>% dplyr::select(Site, Date=sample_dt, Time=sample_tm, Analyte, Result=result_va)
 
 data1$Treatment <- NA
 data1$Treatment[ data1$Date < ymd('2013-10-1')  ] <- 1
 data1$Treatment[ data1$Date >= ymd('2013-10-1') ] <- 2
-data1$Treatment[ data1$Date > ymd('2014-02-28') ] <- 3  # error because I am using the wrong lubridate function
+data1$Treatment[ data1$Date > mdy('2014-02-28') ] <- 3  # error because I am using the wrong lubridate function
 ```
 
 
-## Exporting already?
+```{r corrected Treatment variable}
+data1$Treatment[ data1$Date > ymd('2014-02-28') ] <- 3
+```
+
+
+It would also be nice to set this as a factor or categorical variable.  This will be useful if you want your categorical data to always display in the same order when plotting or summarizing.
+
+```{r factor Treatment}
+data1$Treatment <- factor(data1$Treatment, levels = c(1, 2, 3), labels = c('Pre-Treatment', 'Transitional', 'Post-Treatment'), ordered = T)
+head(data1$Treatment)
+```
+
+
+## Checking out already?
 
 Maybe this is all you needed to do and now your sharing it with a colleague who is going to do everything else (wouldn't that be lovely!).  If you are working in an Rmarkdown, the html output copies into MS Office applications very nicely, or you can output to a word document.  
 
-If you want something systematic (eg. because your doing this with lots of datasets) the baseR `write.csv` function is pretty useful.  You do need to specify the dataframe and the filename.
+If you want something systematic (eg. because your doing this with lots of datasets) the baseR `write.csv` function is pretty useful.  You do need to specify the dataframe and the filename and it will appear in your working directory.
 
 ```{r}
-write.csv(data1, 'Simplified_long_format.csv')
+# write.csv(data1, 'Simplified_long_format.csv')
+```
+
+Maybe that colleague isn't happy with the long format data (analyte and result column).  Maybe they want a wide format where each analyte has it's own column.  What a pain in excel, but fear not!  `tidyverse` is here
+
+```{r}
+data_wide <- data1 %>% pivot_wider(names_from = Analyte, values_from = Result)
+
+data1[,-3] %>% pivot_wider(names_from = Analyte, values_from = Result)  # example issue, remove the time column
+
+View(data_wide)
+```
+
+There are some things that work better with long data, so we can go the other way as well with `tidyverse`
+
+## Exercise Break 1
+
+Can you use data_wide and the `pivot_longer()` function to generate a long format df?
+
+```{r}
+data_wide %>% pivot_longer(colnames(data_wide)[5:8], names_to='Name', values_to='Value')
 ```
 
 
@@ -112,10 +145,11 @@ The lubridate package is a huge improvement over managing dates with baseR (eg. 
 First, Lets check and see if our Date data is actually a date.
 
 ```{r check data class}
-str(data1$Date) # can also use this on the whole data frame, but that can be hard to follow
+str(data1$Date) # can also use this on the whole data frame, but that can be hard to follow on a larger dataset
 
 class(data1$Date)
 ```
+
 ## Look at these: Summary stats
 
 Now that we have cleaned data, we want to take a quick look at it.  The fastest, simplest method is called 'piping' (`%>%`) and is part of the `dplyr` package.  We can use this to generate an overall average for each site, analyte or any other variable with a column in the data frame.
@@ -135,12 +169,12 @@ kable(Table1) %>%
 ```
 
 
-# Exercise break 1
+# Exercise break 2
 
 For each site, analyte, and month, generate the mean, standard deviation, maximum and minimum values, and the n-value?
 
 
-```{r Solution Ex. 1}
+```{r Solution Ex. 2}
 Table2 <- data1 %>% 
   group_by(Site, Analyte, month(Date)) %>% 
   summarize(average=mean(Result, na.rm=T), 
@@ -153,58 +187,10 @@ Table2 %>% kable() %>%
 kable_styling(bootstrap_options = c('striped', 'hover'), full_width = F)
 ```
 
-While this is fun, I can think of no application where we would actually want to average a whole dataset.  We might want to include a year, or month?
 
-## That thing everybody loves: dating
+## Getting at the treatment
 
-The lubridate package is a huge improvement over managing dates with baseR (eg. baseR months go from 0-11, so don't get tripped up!), because it makes it easier to separate days, months and years.  
-
-First, Lets check and see if our Date data is actually a date.
-
-
-
-```{r summarize by year and month, results=F}
-
-
-Table4 <- data1[data1$Analyte=='DOC',] %>%
-  group_by(Site, Analyte, month(Date)) %>% 
-  summarize(average=mean(Result), n=n())
-Table4
-```
-
-
-```{r kable summarize by year and month}
-Table4 %>% kable() %>% 
-kable_styling(bootstrap_options = c('striped', 'hover', 'bordered'), full_width = F)
-```
-
-We want to use dates to separate out the pre-treatment, transitional, and post-treatment time periods in this dataset.  I am most comfortable using baseR syntax for this.
-
-## Excercise Break 2
-
-```{r treatment variable}
-data1$Treatment <- NA
-data1$Treatment[ data1$Date < ymd('2013-10-1')  ] <- 1
-data1$Treatment[ data1$Date >= ymd('2013-10-1') ] <- 2
-data1$Treatment[ data1$Date > mdy('2014-02-28') ] <- 3  # error because I am using the wrong lubridate function
-```
-
-```{r corrected Treatment variable, echo=F}
-data1$Treatment[ data1$Date > ymd('2014-02-28') ] <- 3
-```
-
-
-It would also be nice to set this as a factor or categorical variable.
-
-```{r factor Treatment}
-data1$Treatment <- factor(data1$Treatment, levels = c(1, 2, 3), labels = c('Pre-Treatment', 'Transitional', 'Post-Treatment'), ordered = T)
-head(data1$Treatment)
-```
-
-
-## Exercise break 3
-
-Can you generate a nice summary table for each analyte in each treatment period? (Time depending)
+Maybe we want to look at the three treatment periods (novel idea).
 
 ```{r}
 Table5 <- data1 %>% 
@@ -217,5 +203,62 @@ Table5 <- data1 %>%
 Table5
 Table5 %>% kable() %>% 
 kable_styling(bootstrap_options = c('striped', 'hover'), full_width = F)
+```
+
+## Basic statistics
+
+Linear regressions and correlations are common test, and we can use this data to explore how baseR presents these results.  The `lm()` function uses a formula syntax, while `cor()` does not.
+
+```{r linear regression}
+colnames(data_wide)
+reg1 <- lm(data=data_wide, Hg~DOC)
+reg1
+
+summary(reg1)
+```
+
+## Exercise Break 3
+
+Can you use the `cor()` function to generate a correlation between DOC and MeHg?
+
+```{r correlation}
+cor(x=data_wide$DOC, y=data_wide$MeHg, use = 'complete.obs')
+cor(data_wide$MeHg~data_wide$DOC, use = 'complete.obs')
+```
+
+## Normality and ANOVA
+
+If you want to check that your data is normally distributed, you can use the `shapiro.test()` function.  This performs a Shapiro-Wilks test where the null hypothesis states the data is normally distributed
+
+```{r}
+shapiro.test(data_wide$Alkalinity)
+```
+
+Yay! This data is normal!  We can use it for ANOVA tests! We need to start by making an `aov()` object. This also uses the formula format.
+
+```{r}
+anova1 <- aov(data = data_wide, DOC~Treatment+Site+Treatment*Site)
+summary(anova1)
+```
+
+We can use this `aov()` object to perform a Tukey HSD test and generate a rough contrast plot.
+
+```{r, results=F}
+test <- TukeyHSD(anova1)
+plot(test)
+```
+
+
+```{r, fig.height=10, fig.width=10}
+par(mar = c(4.1, 20.1, 2.1, 2.1))
+plot(test, las=1)
+```
+
+## But I can write my own contrasts in SAS!
+
+And you can do that here too, but it requires a little more work than the Tukey HSD
+
+```{r}
+
 ```
 
