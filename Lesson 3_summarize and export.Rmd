@@ -109,7 +109,7 @@ head(data1$Treatment)
 
 ## Checking out already?
 
-Maybe this is all you needed to do and now your sharing it with a colleague who is going to do everything else (wouldn't that be lovely!).  If you are working in an Rmarkdown, the html output copies into MS Office applications very nicely, or you can output to a word document.  
+Maybe this is all you needed to do and now you're sharing it with a colleague who is going to do everything else (wouldn't that be lovely!).  If you are working in an Rmarkdown, the html output copies into MS Office applications very nicely, or you can output to a word document.  
 
 If you want something systematic (eg. because your doing this with lots of datasets) the baseR `write.csv` function is pretty useful.  You do need to specify the dataframe and the filename and it will appear in your working directory.
 
