@@ -8,7 +8,10 @@ header-includes:
   \usepackage{graphicx}
   \usepackage{caption}
   \captionsetup{position=above,font=large,labelfont=bf}
-output: html_document
+output:
+  html_document:
+    toc: true
+    depth: 2
 ---
 
 ```{r setup, include=FALSE}
@@ -20,6 +23,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
 library(ellipsis)
 library(vctrs)
+library(rlang)
 ```
 
 ## 0. Welcome!  
@@ -133,7 +137,7 @@ We can also look at our data using code. There are a lot of lines, so I want to 
 
 Type the following code into your script:  
 
-```{r, echo=TRUE, message=FALSE}
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
 head(midwest)
 ```
 Run that line of code- notice that it prints just the first 6 lines. This is because the function *head()* will always print the first 6 rows of any dataframe you pass to it. It's a very useful function, especially when you have real life data that can have thousands, or even millions, of rows.  
@@ -176,7 +180,7 @@ To save us time in later sessions, we will install *all* of the packages we need
 ### 2.5 Commenting Your Code
 The pound/hash key (#) in R is never evaluated when code is executed. We can use # to write reminders and instructions to ourselves, which keeps our code clean and organized. Add the following to our script:
 
-```{r, echo=TRUE, results='hide'}
+```{r, echo=TRUE, warning=FALSE, results='hide'}
 # Define x
 x <- 36
 print(x)
