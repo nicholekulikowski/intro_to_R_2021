@@ -10,9 +10,26 @@ header-includes:
   \captionsetup{position=above,font=large,labelfont=bf}
 output:
   html_document:
+    theme: united
+    highlight: tango
+    font: 16
     toc: true
-    depth: 2
+    depth: 1
 ---
+<style type="text/css">
+h1.title {
+  font-size: 38px;
+  text-align: center;
+}
+h4.author {
+  font-size: 18px;
+  text-align: center;
+}
+h4.date {
+  font-size: 18px;
+  text-align: center;
+}
+</style>
 
 ```{r setup, include=FALSE}
 chooseCRANmirror(graphics=FALSE, ind=1)
@@ -221,7 +238,7 @@ There are many different ways to examine data- we have actually already learned 
 
 Type the following again into our script:
 
-```{r, echo=TRUE, results='hide'}
+```{r, echo=TRUE, results='hide', warning=FALSE}
 head(midwest)
 ```
 Run the code to remind yourself what **head()** will print. Now, add the following code to our script:
@@ -253,10 +270,10 @@ The columns of midwest are not just one number/word, but are 430. Each column is
 Type the following code into your script:
 
 ```{r, echo=TRUE}
-class(midwest$poptotal)
+class(midwest$area)
 
 ```
-Run the code. Notice that the "poptotal" vector is of type **numeric**. This makes sense, since all of the values in this column are numbers.
+Run the code. Notice that the "area" vector is of type **numeric**. This makes sense, since all of the values in this column are numbers.
 
 #### Character
 Type the following code into your script"
