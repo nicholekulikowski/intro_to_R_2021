@@ -19,6 +19,8 @@ This session starts from scratch and assumes no prior knowledge. We will learn h
 ### Lesson 2 (9/22): Getting and Cleaning Data
 Lead: Sabrina Deeley
 
+This session goes over important R basics using base R, including: naming and creating columns, data checks, selecting for specific data within the larger dataset, combining datasets, and saving/importing excel and csvs into R.
+
 ### Lesson 3 (9/23): Summarizing and Exporting Data
 Lead: Geoffrey Millard
 
