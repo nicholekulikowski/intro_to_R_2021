@@ -12,7 +12,7 @@
 ###############################################################
 
 # 1. Installing Packages- Using the RStudio interface, install the package "tidyverse".
-# (Note- tidyverse is actually a family of packages, which will be using all of Day 2)
+# (Note- tidyverse is actually a family of packages, which we will be using all of Day 2)
 
 
 # 2. Install the following packages using code: "readxl" and "lubridate"  (hint- use the function install.packages( ) )

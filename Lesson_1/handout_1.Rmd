@@ -1,7 +1,7 @@
 ---
 title: 'Session 1: Welcome to R and RStudio'
 author: "Nichole Kulikowski"
-date: "9/23/2021"
+date: "9/22/2021"
 geometry: margin = 1in
 header-includes:
   \usepackage{setspace}
@@ -81,7 +81,7 @@ There are two ways we can write code- by typing directly in the console, and by 
 ### 1.1 Our First Script
 Like many tasks in R, there are two ways to make a new script- by using the RStudio interface and by using the keyboard shortcut (Ctrl+Shift+Enter on Windows). We will be using the RStudio interface for most of this workshop, but if you are interested in using the Keyboard Shortcuts you can see a more comprehensive list *here*.
 
-#### Let's make a new script!
+_**Let's make a new script!**_
 On the top-left of your screen, click File, New File, then R Script.  
 
 This starts a new pane on the top left. This is where we can start writing our first code:
@@ -214,6 +214,7 @@ midwest %>% filter(poptotal>1000000)
 
 Note that we haven't changed any of our code, we just commented out to make it clean and easy to read!
 
+## Activity 1! 
 
 ## 3. Data Types
 Variables in R can be of different **types**. The function **class()** helps us determine what type of object we have. Add the following code to our script:
@@ -299,7 +300,7 @@ Run the code. Note that R prints a **logical vector** of TRUEs and FALSEs.
 ```{r length, echo=TRUE}
 length(which(midwest$state == "WI"))
 ```
-### KNOWLEDGE CHECK 2
+### Knowledge Check 2
 
 We asked R to evaluate the "state" vector, whereby any value in the "state" vector that equals "WI" will be **TRUE** and everything else will be **FALSE** (since it does not equal "WI"). **The which()** function evaluated which rows equal "WI", or in other words, converted our **TRUEs** to 1's. **length** then counted up our 1's.
 
@@ -316,7 +317,7 @@ data("iris")
 head(iris)
 ```
 
-### KNOWLEDGE CHECK 3: What type do you think the Species column is?
+### Knowledge Check 3: What type do you think the Species column is?
 
 Type the following code into your script:
 ```{r, echo=TRUE}
@@ -333,16 +334,15 @@ Type the following code into your script:
 ```{r, echo=TRUE}
 levels(iris$Species)
 ```
-Note that even though the vector is 430 entries long, but there are only 3 levels. This is more memory efficient and can be useful for large datasets. For our purposes, we will not need to use them much. This is where the following functions can be useful:
+Note that even though the vector is 150 entries long, but there are only 3 levels. This is more memory efficient and can be useful for large datasets. For our purposes, we will not need to use them much. This is where the following functions can be useful:
 
 * as.character() *converts vector to a character vector*
 
 * as.numeric() *converts vector to a numeric vector*
 
-## 4. Final Tips for your R Toolbox
+## 4. Troubleshooting
 
-### 4.1 Troubleshooting
-#### ? Function
+### 4.1 ? Function
 Every function in R has a help page that can be accessed right in RStudio. We can access this by using the symbol **?**. Type the following code **directly into your console** (not in your script):
 
 ```{r, echo=TRUE, message=FALSE, results='hide'}
@@ -352,7 +352,7 @@ Every function in R has a help page that can be accessed right in RStudio. We ca
 Note that this generates the help page for the *filter()* function. This is in the bottom right pane under the "Help" tab. You can do this with any function.  
 Another way to access the Help page is by going to Help, Search R Help on the top left. This will do the same thing- just type the function you are looking for.
 
-### Arguments
+### 4.2 Arguments
 The code that goes inside functions is called **arguments**. Each function in R has certain **arguments** that it is expecting, and some arguments that are optional.
 
 If you ever forget what the arguments of a specific function are, there are a few things you can do:
@@ -360,7 +360,7 @@ If you ever forget what the arguments of a specific function are, there are a fe
 * Use the **args()** function, which will print the arguments
 * Type your function in the console and then click TAB- you can toggle between arguments with the arrow keys
 
-### Errors
+### 4.3 Errors
 Errors are not only common when coding, but are inevitable- even for the most advanced R users.
 
 This is by no means comprehensive, but if you do run into errors here are some common mistakes:
@@ -370,9 +370,9 @@ This is by no means comprehensive, but if you do run into errors here are some c
 * Packages (forgetting to install and/or load a package. Don't forget **library()**)
 
 
-### Google/StackOverflow
+### 4.4 Google/StackOverflow
 A coders best friend is Google- if you run into an error you're not sure about and have tried the above methods, try Googling it. Chances are someone else has already had the same problem!
 
 Google tip- Although we love **R**, it can often confuse the internet since it's a single letter. Try Googling "R (insert error)", but if you can't find what you're looking for, also try "R language (insert error)"
 
-# Activity!
+## Activity 2!
