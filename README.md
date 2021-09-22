@@ -24,7 +24,7 @@ This session goes over important R basics using base R, including: naming and cr
 ### Lesson 3 (9/23): Summarizing and Exporting Data
 Lead: Geoffrey Millard
 
-This session uses a mix of live demonstrations and exercises to build off of skills developed in Lessons 1 and 2 to quickly summarize data into descriptive statistics.  Summary data and tables can be easily exported and shared as .csv files or .html.  If time allows, a brief demonstration of a couple baseR statistics will also be shown.
+This session uses a mix of live demonstrations/code along and exercises to build off of skills developed in Lessons 1 and 2 to quickly summarize data into descriptive statistics.  Summary data and tables can be easily exported and shared as .csv files or .html.  If time allows, a brief demonstration of a couple baseR statistics will also be shown.  In order to show how this might work with real data, we will be using some [previously published real data](https://link.springer.com/article/10.1007%2Fs10646-020-02224-1).
 
 ### Lesson 4 (9/23): Visualizing Data
 Lead: Marschall Furman
