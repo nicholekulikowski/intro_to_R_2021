@@ -8,7 +8,7 @@ This repository contains all materials for the biannual Introduction to R worksh
 - Geoffrey Millard
 
 ## Workshop Preparation
-Insert instructions on how to install RStudio on EPA computer and any other materials we want participants to download/review ahead of time.
+Before Day 1, make sure to download the zipped folder that was sent via email (materials can also be found on Repo)
 
 ## Schedule
 ### Lesson 1 (9/22): Welcome to R and RStudio
