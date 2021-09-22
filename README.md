@@ -1,5 +1,5 @@
 # 2021 Introduction to R Workshop
-This repository contains all materials for the annual Introduction to R workshop. This workshop will take place virtually over the course of two half-day sessions on September 22-23rd as part of EPA's annual R-User Group Workshop.
+This repository contains all materials for the biannual Introduction to R workshop. This workshop will take place virtually over the course of two half-day sessions on September 22-23rd as part of EPA's annual R-User Group Workshop.
 
 ## Workshop Instructors
 - Sabrina Deeley
