@@ -36,7 +36,7 @@ rm(list = ls(all.names = TRUE))
 
 If we cover everything these are the packages we will need.  I'll introduce them when we start using each package.
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 library(dataRetrieval)
 library(tidyverse)
 library(tidyselect)
@@ -51,7 +51,7 @@ library(multcomp)
 
 We were importing actual data from NWIS and cleaning it up for today.
 
-```{r importing}
+```{r importing, warning=FALSE}
 #USGS and EPA dataset retrieval package
 library(dataRetrieval) 
 #click on "Packages" tab to see functions available in the dataRetrival package
