@@ -121,7 +121,7 @@ This workshop will focus on learning through problem solving, so let's start by 
 
 R also has some datasets that are built-in automatically. We will start by using the dataset **midwest** that is built-in the package **ggplot2**. Type the following code into your script:
 
-```{r, echo=FALSE}
+```{r, echo=TRUE, message=FALSE}
 library(ggplot2)
 data(midwest)
 ```
@@ -133,7 +133,7 @@ We can also look at our data using code. There are a lot of lines, so I want to 
 
 Type the following code into your script:  
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, message=FALSE}
 head(midwest)
 ```
 Run that line of code- notice that it prints just the first 6 lines. This is because the function *head()* will always print the first 6 rows of any dataframe you pass to it. It's a very useful function, especially when you have real life data that can have thousands, or even millions, of rows.  
@@ -143,16 +143,15 @@ Run that line of code- notice that it prints just the first 6 lines. This is bec
 
 Navigate to the "Tools" tab on the top left. Click Tools, Install Packages. This is one way to search and install packages- you can type the desired package in the middle line.  
 
-We can also install packages using the function **install.packages()*
-* Type the following in your script:
+We can also install packages using the function **install.packages()**. Type the following in your script:
 
-```{r, echo=FALSE}
+```{r, echo=TRUE, message=FALSE, warning=FALSE, results=FALSE}
 install.packages("dplyr")
 
 ```
 Run your script again. This now installed the package *dplyr* which is actually part of a family of packages referred to as the *Tidyverse*, which we will cover more extensively tomorrow during Day 2.  
 
-Let's try using a function from *dplyr* now that we installed it! *filter()* is a common function in this package- let's find out which counties in the midwest had a population total greater than **10.0**.  
+Let's try using a function from *dplyr* now that we installed it! *filter()* is a common function in this package- let's find out which counties in the midwest had a population total greater than **1,000,000** people.  
 
 Type the following code into your console:
 
@@ -167,7 +166,7 @@ R could not find the function **%>%** or **filter()** because, even though we *i
 
 Type the following into your script:
 
-```{r, echo=FALSE}
+```{r, echo=TRUE, message=FALSE}
 library(dplyr)
 ```
 This now *loads* the package *dplyr* into our session. Note that you only need to *install* packages once- it will remain installed forever, and just needs to be loaded with the **library()** function.  
@@ -177,7 +176,7 @@ To save us time in later sessions, we will install *all* of the packages we need
 ### 2.5 Commenting Your Code
 The pound/hash key (#) in R is never evaluated when code is executed. We can use # to write reminders and instructions to ourselves, which keeps our code clean and organized. Add the following to our script:
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, results='hide'}
 # Define x
 x <- 36
 print(x)
@@ -218,7 +217,7 @@ There are many different ways to examine data- we have actually already learned 
 
 Type the following again into our script:
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, results='hide'}
 head(midwest)
 ```
 Run the code to remind yourself what **head()** will print. Now, add the following code to our script:
@@ -236,11 +235,11 @@ To access columns inside a dataframe, we use the symbol $, also called the **acc
 Type the following into our script:
 
 ```{r, echo=TRUE}
-midwest$poptotal
+midwest$county
 ```
-Run the new line. Note that it prints the "poptotal" column, which is inside the "midwest" dataframe.
+Run the new line. Note that it prints the "county" column, which is inside the "midwest" dataframe.
 
-*Tip 1*: If you forget your column names, R can suggest them for you by hitting the **Tab** button. Try typing **midwest$**, and immediately hit Tab. This will show you all of the column names that exist inside the midwest dataframe, and we can toggle between them using the arrow keys on the keyboard.
+*Tip 1*: If you forget your column names, R can suggest them for you by hitting the **Tab** button. Try typing **midwest$**, and immediately hit Tab. This will show you all of the column names that exist inside the "midwest" dataframe, and we can toggle between them using the arrow keys on the keyboard.
 
 ### 3.4 Vectors: Numerics, Characters, Logicals
 
@@ -325,7 +324,7 @@ Note that even though the vector is 430 entries long, but there are only 3 level
 #### ? Function
 Every function in R has a help page that can be accessed right in RStudio. We can access this by using the symbol **?**. Type the following code **directly into your console** (not in your script):
 
-```{r, echo=FALSE}
+```{r, echo=TRUE, message=FALSE, results='hide'}
 ?filter
 ```
 

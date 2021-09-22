@@ -243,7 +243,9 @@ print(x)</code></pre>
 <h3>2.3 Our First Dataset</h3>
 <p>This workshop will focus on learning through problem solving, so let’s start by getting in some data to look at. Generally, when you use R, you will be loading in your own data. We regularly load in Excel files, CSV, SAS files, etc. here at EPA, just to name a few. We will cover how to load external datasets next session.</p>
 <p>R also has some datasets that are built-in automatically. We will start by using the dataset <strong>midwest</strong> that is built-in the package <strong>ggplot2</strong>. Type the following code into your script:</p>
+<pre class="r"><code>library(ggplot2)</code></pre>
 <pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 4.0.5</code></pre>
+<pre class="r"><code>data(midwest)</code></pre>
 <p>Notice “midwest” is now located in your environment. We can view this either by using code, or by clicking on the object within our environment.</p>
 <p>Click on “midwest” in your Environment (remember- top right pane!). Notice this will show you the data in a new tab in our code editor.</p>
 <p>We can also look at our data using code. There are a lot of lines, so I want to really just look at a piece of this code just to see what it looks like (what columns there are, what type of data is available, etc).</p>
@@ -270,19 +272,10 @@ print(x)</code></pre>
 <h3>2.4 Installing/Loading Packages</h3>
 <p><strong>Base R</strong> is what you get automatically when you install R, but thousands of packages exist that we can install and add on. R makes this very easy.</p>
 <p>Navigate to the “Tools” tab on the top left. Click Tools, Install Packages. This is one way to search and install packages- you can type the desired package in the middle line.</p>
-<p>We can also install packages using the function **install.packages()<em> </em> Type the following in your script:</p>
-<pre><code>## package &#39;dplyr&#39; successfully unpacked and MD5 sums checked</code></pre>
-<pre><code>## Warning: cannot remove prior installation of package &#39;dplyr&#39;</code></pre>
-<pre><code>## Warning in file.copy(savedcopy, lib, recursive = TRUE): problem copying C:
-## \Users\NKULIKOW\Documents\R\R-4.0.3\library\00LOCK\dplyr\libs\x64\dplyr.dll
-## to C:\Users\NKULIKOW\Documents\R\R-4.0.3\library\dplyr\libs\x64\dplyr.dll:
-## Permission denied</code></pre>
-<pre><code>## Warning: restored &#39;dplyr&#39;</code></pre>
-<pre><code>## 
-## The downloaded binary packages are in
-##  C:\Users\NKULIKOW\AppData\Local\Temp\RtmpkLhsMv\downloaded_packages</code></pre>
+<p>We can also install packages using the function <strong>install.packages()</strong>. Type the following in your script:</p>
+<pre class="r"><code>install.packages(&quot;dplyr&quot;)</code></pre>
 <p>Run your script again. This now installed the package <em>dplyr</em> which is actually part of a family of packages referred to as the <em>Tidyverse</em>, which we will cover more extensively tomorrow during Day 2.</p>
-<p>Let’s try using a function from <em>dplyr</em> now that we installed it! <em>filter()</em> is a common function in this package- let’s find out which counties in the midwest had a population total greater than <strong>10.0</strong>.</p>
+<p>Let’s try using a function from <em>dplyr</em> now that we installed it! <em>filter()</em> is a common function in this package- let’s find out which counties in the midwest had a population total greater than <strong>1,000,000</strong> people.</p>
 <p>Type the following code into your console:</p>
 <pre class="r"><code>midwest %&gt;% filter(poptotal&gt;1000000)</code></pre>
 <pre><code>## Error in midwest %&gt;% filter(poptotal &gt; 1e+06): could not find function &quot;%&gt;%&quot;</code></pre>
@@ -290,17 +283,7 @@ print(x)</code></pre>
 <p>What happened? This is our first (and certainly not last) error!</p>
 <p>R could not find the function <strong>%&gt;%</strong> or <strong>filter()</strong> because, even though we <em>installed</em> <strong>dplyr</strong> we did not <em>load</em> it into our library!</p>
 <p>Type the following into your script:</p>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:vctrs&#39;:
-## 
-##     data_frame</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(dplyr)</code></pre>
 <p>This now <em>loads</em> the package <em>dplyr</em> into our session. Note that you only need to <em>install</em> packages once- it will remain installed forever, and just needs to be loaded with the <strong>library()</strong> function.</p>
 <p>To save us time in later sessions, we will install <em>all</em> of the packages we need for the rest of the workshop as part of our first exercise at the end of this session.</p>
 </div>
@@ -309,44 +292,17 @@ print(x)</code></pre>
 <p>The pound/hash key (#) in R is never evaluated when code is executed. We can use # to write reminders and instructions to ourselves, which keeps our code clean and organized. Add the following to our script:</p>
 <pre class="r"><code># Define x
 x &lt;- 36
-print(x)</code></pre>
-<pre><code>## [1] 36</code></pre>
-<pre class="r"><code># Load midwest data
+print(x)
+
+# Load midwest data
 data(&quot;midwest&quot;)
-head(midwest)</code></pre>
-<pre><code>## # A tibble: 6 x 28
-##     PID county    state  area poptotal popdensity popwhite popblack popamerindian
-##   &lt;int&gt; &lt;chr&gt;     &lt;chr&gt; &lt;dbl&gt;    &lt;int&gt;      &lt;dbl&gt;    &lt;int&gt;    &lt;int&gt;         &lt;int&gt;
-## 1   561 ADAMS     IL    0.052    66090      1271.    63917     1702            98
-## 2   562 ALEXANDER IL    0.014    10626       759      7054     3496            19
-## 3   563 BOND      IL    0.022    14991       681.    14477      429            35
-## 4   564 BOONE     IL    0.017    30806      1812.    29344      127            46
-## 5   565 BROWN     IL    0.018     5836       324.     5264      547            14
-## 6   566 BUREAU    IL    0.05     35688       714.    35157       50            65
-## # ... with 19 more variables: popasian &lt;int&gt;, popother &lt;int&gt;, percwhite &lt;dbl&gt;,
-## #   percblack &lt;dbl&gt;, percamerindan &lt;dbl&gt;, percasian &lt;dbl&gt;, percother &lt;dbl&gt;,
-## #   popadults &lt;int&gt;, perchsd &lt;dbl&gt;, percollege &lt;dbl&gt;, percprof &lt;dbl&gt;,
-## #   poppovertyknown &lt;int&gt;, percpovertyknown &lt;dbl&gt;, percbelowpoverty &lt;dbl&gt;,
-## #   percchildbelowpovert &lt;dbl&gt;, percadultpoverty &lt;dbl&gt;,
-## #   percelderlypoverty &lt;dbl&gt;, inmetro &lt;int&gt;, category &lt;chr&gt;</code></pre>
-<pre class="r"><code>#Install/Load dplyr and filter
+head(midwest)
+
+#Install/Load dplyr and filter
 install.packages(&quot;dplyr&quot;)</code></pre>
 <pre><code>## Warning: package &#39;dplyr&#39; is in use and will not be installed</code></pre>
 <pre class="r"><code>library(dplyr)
 midwest %&gt;% filter(poptotal&gt;1000000)</code></pre>
-<pre><code>## # A tibble: 4 x 28
-##     PID county   state  area poptotal popdensity popwhite popblack popamerindian
-##   &lt;int&gt; &lt;chr&gt;    &lt;chr&gt; &lt;dbl&gt;    &lt;int&gt;      &lt;dbl&gt;    &lt;int&gt;    &lt;int&gt;         &lt;int&gt;
-## 1   576 COOK     IL    0.058  5105067     88018.  3204947  1317147         10289
-## 2  1259 OAKLAND  MI    0.055  1083592     19702.   970674    77488          3948
-## 3  1278 WAYNE    MI    0.035  2111687     60334.  1212007   849109          8048
-## 4  2026 CUYAHOGA OH    0.026  1412140     54313.  1025756   350185          2533
-## # ... with 19 more variables: popasian &lt;int&gt;, popother &lt;int&gt;, percwhite &lt;dbl&gt;,
-## #   percblack &lt;dbl&gt;, percamerindan &lt;dbl&gt;, percasian &lt;dbl&gt;, percother &lt;dbl&gt;,
-## #   popadults &lt;int&gt;, perchsd &lt;dbl&gt;, percollege &lt;dbl&gt;, percprof &lt;dbl&gt;,
-## #   poppovertyknown &lt;int&gt;, percpovertyknown &lt;dbl&gt;, percbelowpoverty &lt;dbl&gt;,
-## #   percchildbelowpovert &lt;dbl&gt;, percadultpoverty &lt;dbl&gt;,
-## #   percelderlypoverty &lt;dbl&gt;, inmetro &lt;int&gt;, category &lt;chr&gt;</code></pre>
 <p>Note that we haven’t changed any of our code, we just commented out to make it clean and easy to read!</p>
 </div>
 </div>
@@ -369,21 +325,6 @@ midwest %&gt;% filter(poptotal&gt;1000000)</code></pre>
 <p>There are many different ways to examine data- we have actually already learned some of them! <strong>head()</strong>, which we covered earlier, is one example. Let’s go over three of the most common ways using “midwest” again.</p>
 <p>Type the following again into our script:</p>
 <pre class="r"><code>head(midwest)</code></pre>
-<pre><code>## # A tibble: 6 x 28
-##     PID county    state  area poptotal popdensity popwhite popblack popamerindian
-##   &lt;int&gt; &lt;chr&gt;     &lt;chr&gt; &lt;dbl&gt;    &lt;int&gt;      &lt;dbl&gt;    &lt;int&gt;    &lt;int&gt;         &lt;int&gt;
-## 1   561 ADAMS     IL    0.052    66090      1271.    63917     1702            98
-## 2   562 ALEXANDER IL    0.014    10626       759      7054     3496            19
-## 3   563 BOND      IL    0.022    14991       681.    14477      429            35
-## 4   564 BOONE     IL    0.017    30806      1812.    29344      127            46
-## 5   565 BROWN     IL    0.018     5836       324.     5264      547            14
-## 6   566 BUREAU    IL    0.05     35688       714.    35157       50            65
-## # ... with 19 more variables: popasian &lt;int&gt;, popother &lt;int&gt;, percwhite &lt;dbl&gt;,
-## #   percblack &lt;dbl&gt;, percamerindan &lt;dbl&gt;, percasian &lt;dbl&gt;, percother &lt;dbl&gt;,
-## #   popadults &lt;int&gt;, perchsd &lt;dbl&gt;, percollege &lt;dbl&gt;, percprof &lt;dbl&gt;,
-## #   poppovertyknown &lt;int&gt;, percpovertyknown &lt;dbl&gt;, percbelowpoverty &lt;dbl&gt;,
-## #   percchildbelowpovert &lt;dbl&gt;, percadultpoverty &lt;dbl&gt;,
-## #   percelderlypoverty &lt;dbl&gt;, inmetro &lt;int&gt;, category &lt;chr&gt;</code></pre>
 <p>Run the code to remind yourself what <strong>head()</strong> will print. Now, add the following code to our script:</p>
 <pre class="r"><code>str(midwest)</code></pre>
 <pre><code>## tibble [437 x 28] (S3: tbl_df/tbl/data.frame)
@@ -422,58 +363,119 @@ midwest %&gt;% filter(poptotal&gt;1000000)</code></pre>
 <h3>3.3 The Accessor $</h3>
 <p>To access columns inside a dataframe, we use the symbol $, also called the <strong>accessor</strong>.</p>
 <p>Type the following into our script:</p>
-<pre class="r"><code>midwest$poptotal</code></pre>
-<pre><code>##   [1]   66090   10626   14991   30806    5836   35688    5322   16805   13437
-##  [10]  173025   34418   15921   14460   33944   51644 5105067   19464   10670
-##  [19]   77932   16516   19464  781666   19595    7440   31704   20893   14275
-##  [28]   40319   38080    6909   15317   32337    8499   21373    5189    8096
-##  [37]   51159   30787   61067   10609   37020   20539   21821   11347  317471
-##  [46]   96255   39413   56393  516418  106913   15972   34392   39301   30798
-##  [55]   35244  183241  129180  117206   47679  249238   41561   12846   16269
-##  [64]   14752   11164   17290   22422   30728   36397   13930   45957  182827
-##  [73]   21412   15548   17577    4373    7523    5730   34583   16545  148723
-##  [82]  262852   26551  178386    7498    5644   22261    6534   48052  123692
-##  [91]   17619   88257   13111   19181   14965   17241   16522   60186  357313
-## [100]   57733  252913   32653   31095  300836   63657    9441   14067   38147
-## [109]   14080   18809   38413   87777   24705   30974    9914   27533   38835
-## [118]   23645   35324  119659   36616  156198   26015   64404   17808   19580
-## [127]   18840   31913   74169   30410  108936   45527   29890   75717   48139
-## [136]   80827   35427   37730   24960   21512   29797   23661   88109   39884
-## [145]   65294   29477  475594  107066   42836  130669  797159   42182   10369
-## [154]   36897  108978   34436   55920   13551   37877    5315   18409   17281
-## [163]   15410   19107   12509  128932   25968   12643   30315   27148   24616
-## [172]   18129  247052   20991   40307   19490   22747   27446   18993    7738
-## [181]  130598   16119    6976  165058   16773  106107   35069    8176   44920
-## [190]   23717   71951   25948   23265   27651   10145    8972   90509   30605
-## [199]   18185   14931    7954   50057  111723   12200  161378   41502  135982
-## [208]   49477   21468   21398   34604   24952   57883   12260   37780   26831
-## [217]   92879   25040  430459   21896   18052   64273   38982   43431   35446
-## [226]   34951  281912   57024   30209   13175   54624  149756  223411   13497
-## [235]  500631    1701    8583   74768   16527   91476  115645    5763   10674
-## [244]  717400   21265   70887   25537   37308   24920   75651   12147  133600
-## [253]   53059    8936  158983   38202 1083592   22454   18681    8854   20146
-## [262]    7842   17957  187768   13743   19776  211946  145607   58913   39928
-## [271]    8302   69770   55498   70060  282937 2111687   26360   25371  109755
-## [280]   47507   99821   59549   44585   71074   34966  291479   26521   36019
-## [289]  147548  150187   35415  108276   35427   47870 1412140   53619   39350
-## [298]   66929   76779  103461   27466  961437   38498   30954   81129  136731
-## [307]   39024  866228   65536   31111   16085   29108   35728   25533   32849
-## [316]   56240   30230   80298   47473  215499   61834  128300   42310  271126
-## [325]  462361   37068  264806   64274  122354   22987   39443   93182   15497
-## [334]  573809   14194   27749   82068   11336   40029   20488   31557   48255
-## [343]   24249  142585   40113   33819  126137   69330   61963   80327   59733
-## [352]   44915  367585  514990  227813   84090   31969   30464   11098  113909
-## [361]   62254  101461   36956  113269   22254   15682   16307   40750   14008
-## [370]  194594   13584   13084   34291   52360   31647   45088   15940  367085
-## [379]   76559   25690   41758   35909   85183    4590   90083    8776   49264
-## [388]   30339   18651   20150    6153   16588   67783   21650  128181   18878
-## [397]   97904   16076   19505   26993   80421  115400   40548   12321    3890
-## [406]  959275   36633   30226   31679  140510   72831    7107   32765   34773
-## [415]   61405   15600  175034   17521  139510   15079   50251   46975   14181
-## [424]   37157  103877   18901   25263   25617   17707   75000   13772   95328
-## [433]  304715   46104   19385  140320   73605</code></pre>
-<p>Run the new line. Note that it prints the “poptotal” column, which is inside the “midwest” dataframe.</p>
-<p><em>Tip 1</em>: If you forget your column names, R can suggest them for you by hitting the <strong>Tab</strong> button. Try typing <strong>midwest$</strong>, and immediately hit Tab. This will show you all of the column names that exist inside the midwest dataframe, and we can toggle between them using the arrow keys on the keyboard.</p>
+<pre class="r"><code>midwest$county</code></pre>
+<pre><code>##   [1] &quot;ADAMS&quot;          &quot;ALEXANDER&quot;      &quot;BOND&quot;           &quot;BOONE&quot;         
+##   [5] &quot;BROWN&quot;          &quot;BUREAU&quot;         &quot;CALHOUN&quot;        &quot;CARROLL&quot;       
+##   [9] &quot;CASS&quot;           &quot;CHAMPAIGN&quot;      &quot;CHRISTIAN&quot;      &quot;CLARK&quot;         
+##  [13] &quot;CLAY&quot;           &quot;CLINTON&quot;        &quot;COLES&quot;          &quot;COOK&quot;          
+##  [17] &quot;CRAWFORD&quot;       &quot;CUMBERLAND&quot;     &quot;DE KALB&quot;        &quot;DE WITT&quot;       
+##  [21] &quot;DOUGLAS&quot;        &quot;DU PAGE&quot;        &quot;EDGAR&quot;          &quot;EDWARDS&quot;       
+##  [25] &quot;EFFINGHAM&quot;      &quot;FAYETTE&quot;        &quot;FORD&quot;           &quot;FRANKLIN&quot;      
+##  [29] &quot;FULTON&quot;         &quot;GALLATIN&quot;       &quot;GREENE&quot;         &quot;GRUNDY&quot;        
+##  [33] &quot;HAMILTON&quot;       &quot;HANCOCK&quot;        &quot;HARDIN&quot;         &quot;HENDERSON&quot;     
+##  [37] &quot;HENRY&quot;          &quot;IROQUOIS&quot;       &quot;JACKSON&quot;        &quot;JASPER&quot;        
+##  [41] &quot;JEFFERSON&quot;      &quot;JERSEY&quot;         &quot;JO DAVIESS&quot;     &quot;JOHNSON&quot;       
+##  [45] &quot;KANE&quot;           &quot;KANKAKEE&quot;       &quot;KENDALL&quot;        &quot;KNOX&quot;          
+##  [49] &quot;LAKE&quot;           &quot;LA SALLE&quot;       &quot;LAWRENCE&quot;       &quot;LEE&quot;           
+##  [53] &quot;LIVINGSTON&quot;     &quot;LOGAN&quot;          &quot;MCDONOUGH&quot;      &quot;MCHENRY&quot;       
+##  [57] &quot;MCLEAN&quot;         &quot;MACON&quot;          &quot;MACOUPIN&quot;       &quot;MADISON&quot;       
+##  [61] &quot;MARION&quot;         &quot;MARSHALL&quot;       &quot;MASON&quot;          &quot;MASSAC&quot;        
+##  [65] &quot;MENARD&quot;         &quot;MERCER&quot;         &quot;MONROE&quot;         &quot;MONTGOMERY&quot;    
+##  [69] &quot;MORGAN&quot;         &quot;MOULTRIE&quot;       &quot;OGLE&quot;           &quot;PEORIA&quot;        
+##  [73] &quot;PERRY&quot;          &quot;PIATT&quot;          &quot;PIKE&quot;           &quot;POPE&quot;          
+##  [77] &quot;PULASKI&quot;        &quot;PUTNAM&quot;         &quot;RANDOLPH&quot;       &quot;RICHLAND&quot;      
+##  [81] &quot;ROCK ISLAND&quot;    &quot;ST CLAIR&quot;       &quot;SALINE&quot;         &quot;SANGAMON&quot;      
+##  [85] &quot;SCHUYLER&quot;       &quot;SCOTT&quot;          &quot;SHELBY&quot;         &quot;STARK&quot;         
+##  [89] &quot;STEPHENSON&quot;     &quot;TAZEWELL&quot;       &quot;UNION&quot;          &quot;VERMILION&quot;     
+##  [93] &quot;WABASH&quot;         &quot;WARREN&quot;         &quot;WASHINGTON&quot;     &quot;WAYNE&quot;         
+##  [97] &quot;WHITE&quot;          &quot;WHITESIDE&quot;      &quot;WILL&quot;           &quot;WILLIAMSON&quot;    
+## [101] &quot;Winnebago&quot;      &quot;WOODFORD&quot;       &quot;ADAMS&quot;          &quot;ALLEN&quot;         
+## [105] &quot;BARTHOLOMEW&quot;    &quot;BENTON&quot;         &quot;BLACKFORD&quot;      &quot;BOONE&quot;         
+## [109] &quot;BROWN&quot;          &quot;CARROLL&quot;        &quot;CASS&quot;           &quot;CLARK&quot;         
+## [113] &quot;CLAY&quot;           &quot;CLINTON&quot;        &quot;CRAWFORD&quot;       &quot;DAVIESS&quot;       
+## [117] &quot;DEARBORN&quot;       &quot;DECATUR&quot;        &quot;DE KALB&quot;        &quot;DELAWARE&quot;      
+## [121] &quot;DUBOIS&quot;         &quot;ELKHART&quot;        &quot;FAYETTE&quot;        &quot;FLOYD&quot;         
+## [125] &quot;FOUNTAIN&quot;       &quot;FRANKLIN&quot;       &quot;FULTON&quot;         &quot;GIBSON&quot;        
+## [129] &quot;GRANT&quot;          &quot;GREENE&quot;         &quot;HAMILTON&quot;       &quot;HANCOCK&quot;       
+## [133] &quot;HARRISON&quot;       &quot;HENDRICKS&quot;      &quot;HENRY&quot;          &quot;HOWARD&quot;        
+## [137] &quot;HUNTINGTON&quot;     &quot;JACKSON&quot;        &quot;JASPER&quot;         &quot;JAY&quot;           
+## [141] &quot;JEFFERSON&quot;      &quot;JENNINGS&quot;       &quot;JOHNSON&quot;        &quot;KNOX&quot;          
+## [145] &quot;KOSCIUSKO&quot;      &quot;LAGRANGE&quot;       &quot;LAKE&quot;           &quot;LA PORTE&quot;      
+## [149] &quot;LAWRENCE&quot;       &quot;MADISON&quot;        &quot;MARION&quot;         &quot;MARSHALL&quot;      
+## [153] &quot;MARTIN&quot;         &quot;MIAMI&quot;          &quot;MONROE&quot;         &quot;MONTGOMERY&quot;    
+## [157] &quot;MORGAN&quot;         &quot;NEWTON&quot;         &quot;NOBLE&quot;          &quot;OHIO&quot;          
+## [161] &quot;ORANGE&quot;         &quot;OWEN&quot;           &quot;PARKE&quot;          &quot;PERRY&quot;         
+## [165] &quot;PIKE&quot;           &quot;PORTER&quot;         &quot;POSEY&quot;          &quot;PULASKI&quot;       
+## [169] &quot;PUTNAM&quot;         &quot;RANDOLPH&quot;       &quot;RIPLEY&quot;         &quot;RUSH&quot;          
+## [173] &quot;ST JOSEPH&quot;      &quot;SCOTT&quot;          &quot;SHELBY&quot;         &quot;SPENCER&quot;       
+## [177] &quot;STARKE&quot;         &quot;STEUBEN&quot;        &quot;SULLIVAN&quot;       &quot;SWITZERLAND&quot;   
+## [181] &quot;TIPPECANOE&quot;     &quot;TIPTON&quot;         &quot;UNION&quot;          &quot;VANDERBURGH&quot;   
+## [185] &quot;VERMILLION&quot;     &quot;VIGO&quot;           &quot;WABASH&quot;         &quot;WARREN&quot;        
+## [189] &quot;WARRICK&quot;        &quot;WASHINGTON&quot;     &quot;WAYNE&quot;          &quot;WELLS&quot;         
+## [193] &quot;WHITE&quot;          &quot;WHITLEY&quot;        &quot;ALCONA&quot;         &quot;ALGER&quot;         
+## [197] &quot;ALLEGAN&quot;        &quot;ALPENA&quot;         &quot;ANTRIM&quot;         &quot;ARENAC&quot;        
+## [201] &quot;BARAGA&quot;         &quot;BARRY&quot;          &quot;BAY&quot;            &quot;BENZIE&quot;        
+## [205] &quot;BERRIEN&quot;        &quot;BRANCH&quot;         &quot;CALHOUN&quot;        &quot;CASS&quot;          
+## [209] &quot;CHARLEVOIX&quot;     &quot;CHEBOYGAN&quot;      &quot;CHIPPEWA&quot;       &quot;CLARE&quot;         
+## [213] &quot;CLINTON&quot;        &quot;CRAWFORD&quot;       &quot;DELTA&quot;          &quot;DICKINSON&quot;     
+## [217] &quot;EATON&quot;          &quot;EMMET&quot;          &quot;GENESEE&quot;        &quot;GLADWIN&quot;       
+## [221] &quot;GOGEBIC&quot;        &quot;GRAND TRAVERSE&quot; &quot;GRATIOT&quot;        &quot;HILLSDALE&quot;     
+## [225] &quot;HOUGHTON&quot;       &quot;HURON&quot;          &quot;INGHAM&quot;         &quot;IONIA&quot;         
+## [229] &quot;IOSCO&quot;          &quot;IRON&quot;           &quot;ISABELLA&quot;       &quot;JACKSON&quot;       
+## [233] &quot;KALAMAZOO&quot;      &quot;KALKASKA&quot;       &quot;KENT&quot;           &quot;KEWEENAW&quot;      
+## [237] &quot;LAKE&quot;           &quot;LAPEER&quot;         &quot;LEELANAU&quot;       &quot;LENAWEE&quot;       
+## [241] &quot;LIVINGSTON&quot;     &quot;LUCE&quot;           &quot;MACKINAC&quot;       &quot;MACOMB&quot;        
+## [245] &quot;MANISTEE&quot;       &quot;MARQUETTE&quot;      &quot;MASON&quot;          &quot;MECOSTA&quot;       
+## [249] &quot;MENOMINEE&quot;      &quot;MIDLAND&quot;        &quot;MISSAUKEE&quot;      &quot;MONROE&quot;        
+## [253] &quot;MONTCALM&quot;       &quot;MONTMORENCY&quot;    &quot;MUSKEGON&quot;       &quot;NEWAYGO&quot;       
+## [257] &quot;OAKLAND&quot;        &quot;OCEANA&quot;         &quot;OGEMAW&quot;         &quot;ONTONAGON&quot;     
+## [261] &quot;OSCEOLA&quot;        &quot;OSCODA&quot;         &quot;OTSEGO&quot;         &quot;OTTAWA&quot;        
+## [265] &quot;PRESQUE ISLE&quot;   &quot;ROSCOMMON&quot;      &quot;SAGINAW&quot;        &quot;ST CLAIR&quot;      
+## [269] &quot;ST JOSEPH&quot;      &quot;SANILAC&quot;        &quot;SCHOOLCRAFT&quot;    &quot;SHIAWASSEE&quot;    
+## [273] &quot;TUSCOLA&quot;        &quot;VAN BUREN&quot;      &quot;WASHTENAW&quot;      &quot;WAYNE&quot;         
+## [277] &quot;WEXFORD&quot;        &quot;ADAMS&quot;          &quot;ALLEN&quot;          &quot;ASHLAND&quot;       
+## [281] &quot;ASHTABULA&quot;      &quot;ATHENS&quot;         &quot;AUGLAIZE&quot;       &quot;BELMONT&quot;       
+## [285] &quot;BROWN&quot;          &quot;BUTLER&quot;         &quot;CARROLL&quot;        &quot;CHAMPAIGN&quot;     
+## [289] &quot;CLARK&quot;          &quot;CLERMONT&quot;       &quot;CLINTON&quot;        &quot;COLUMBIANA&quot;    
+## [293] &quot;COSHOCTON&quot;      &quot;CRAWFORD&quot;       &quot;CUYAHOGA&quot;       &quot;DARKE&quot;         
+## [297] &quot;DEFIANCE&quot;       &quot;DELAWARE&quot;       &quot;ERIE&quot;           &quot;FAIRFIELD&quot;     
+## [301] &quot;FAYETTE&quot;        &quot;FRANKLIN&quot;       &quot;FULTON&quot;         &quot;GALLIA&quot;        
+## [305] &quot;GEAUGA&quot;         &quot;GREENE&quot;         &quot;GUERNSEY&quot;       &quot;HAMILTON&quot;      
+## [309] &quot;HANCOCK&quot;        &quot;HARDIN&quot;         &quot;HARRISON&quot;       &quot;HENRY&quot;         
+## [313] &quot;HIGHLAND&quot;       &quot;HOCKING&quot;        &quot;HOLMES&quot;         &quot;HURON&quot;         
+## [317] &quot;JACKSON&quot;        &quot;JEFFERSON&quot;      &quot;KNOX&quot;           &quot;LAKE&quot;          
+## [321] &quot;LAWRENCE&quot;       &quot;LICKING&quot;        &quot;LOGAN&quot;          &quot;LORAIN&quot;        
+## [325] &quot;LUCAS&quot;          &quot;MADISON&quot;        &quot;MAHONING&quot;       &quot;MARION&quot;        
+## [329] &quot;MEDINA&quot;         &quot;MEIGS&quot;          &quot;MERCER&quot;         &quot;MIAMI&quot;         
+## [333] &quot;MONROE&quot;         &quot;MONTGOMERY&quot;     &quot;MORGAN&quot;         &quot;MORROW&quot;        
+## [337] &quot;MUSKINGUM&quot;      &quot;NOBLE&quot;          &quot;OTTAWA&quot;         &quot;PAULDING&quot;      
+## [341] &quot;PERRY&quot;          &quot;PICKAWAY&quot;       &quot;PIKE&quot;           &quot;PORTAGE&quot;       
+## [345] &quot;PREBLE&quot;         &quot;PUTNAM&quot;         &quot;RICHLAND&quot;       &quot;ROSS&quot;          
+## [349] &quot;SANDUSKY&quot;       &quot;SCIOTO&quot;         &quot;SENECA&quot;         &quot;SHELBY&quot;        
+## [353] &quot;STARK&quot;          &quot;SUMMIT&quot;         &quot;TRUMBULL&quot;       &quot;TUSCARAWAS&quot;    
+## [357] &quot;UNION&quot;          &quot;VAN WERT&quot;       &quot;VINTON&quot;         &quot;WARREN&quot;        
+## [361] &quot;WASHINGTON&quot;     &quot;WAYNE&quot;          &quot;WILLIAMS&quot;       &quot;WOOD&quot;          
+## [365] &quot;WYANDOT&quot;        &quot;ADAMS&quot;          &quot;ASHLAND&quot;        &quot;BARRON&quot;        
+## [369] &quot;BAYFIELD&quot;       &quot;BROWN&quot;          &quot;BUFFALO&quot;        &quot;BURNETT&quot;       
+## [373] &quot;CALUMET&quot;        &quot;CHIPPEWA&quot;       &quot;CLARK&quot;          &quot;COLUMBIA&quot;      
+## [377] &quot;CRAWFORD&quot;       &quot;DANE&quot;           &quot;DODGE&quot;          &quot;DOOR&quot;          
+## [381] &quot;DOUGLAS&quot;        &quot;DUNN&quot;           &quot;EAU CLAIRE&quot;     &quot;FLORENCE&quot;      
+## [385] &quot;FOND DU LAC&quot;    &quot;FOREST&quot;         &quot;GRANT&quot;          &quot;GREEN&quot;         
+## [389] &quot;GREEN LAKE&quot;     &quot;IOWA&quot;           &quot;IRON&quot;           &quot;JACKSON&quot;       
+## [393] &quot;JEFFERSON&quot;      &quot;JUNEAU&quot;         &quot;KENOSHA&quot;        &quot;KEWAUNEE&quot;      
+## [397] &quot;LA CROSSE&quot;      &quot;LAFAYETTE&quot;      &quot;LANGLADE&quot;       &quot;LINCOLN&quot;       
+## [401] &quot;MANITOWOC&quot;      &quot;MARATHON&quot;       &quot;MARINETTE&quot;      &quot;MARQUETTE&quot;     
+## [405] &quot;MENOMINEE&quot;      &quot;MILWAUKEE&quot;      &quot;MONROE&quot;         &quot;OCONTO&quot;        
+## [409] &quot;ONEIDA&quot;         &quot;OUTAGAMIE&quot;      &quot;OZAUKEE&quot;        &quot;PEPIN&quot;         
+## [413] &quot;PIERCE&quot;         &quot;POLK&quot;           &quot;PORTAGE&quot;        &quot;PRICE&quot;         
+## [417] &quot;RACINE&quot;         &quot;RICHLAND&quot;       &quot;ROCK&quot;           &quot;RUSK&quot;          
+## [421] &quot;ST CROIX&quot;       &quot;SAUK&quot;           &quot;SAWYER&quot;         &quot;SHAWANO&quot;       
+## [425] &quot;SHEBOYGAN&quot;      &quot;TAYLOR&quot;         &quot;TREMPEALEAU&quot;    &quot;VERNON&quot;        
+## [429] &quot;VILAS&quot;          &quot;WALWORTH&quot;       &quot;WASHBURN&quot;       &quot;WASHINGTON&quot;    
+## [433] &quot;WAUKESHA&quot;       &quot;WAUPACA&quot;        &quot;WAUSHARA&quot;       &quot;WINNEBAGO&quot;     
+## [437] &quot;WOOD&quot;</code></pre>
+<p>Run the new line. Note that it prints the “county” column, which is inside the “midwest” dataframe.</p>
+<p><em>Tip 1</em>: If you forget your column names, R can suggest them for you by hitting the <strong>Tab</strong> button. Try typing <strong>midwest$</strong>, and immediately hit Tab. This will show you all of the column names that exist inside the “midwest” dataframe, and we can toggle between them using the arrow keys on the keyboard.</p>
 </div>
 <div id="vectors-numerics-characters-logicals" class="section level3">
 <h3>3.4 Vectors: Numerics, Characters, Logicals</h3>
@@ -584,7 +586,7 @@ head(iris)</code></pre>
 <div id="function" class="section level4">
 <h4>? Function</h4>
 <p>Every function in R has a help page that can be accessed right in RStudio. We can access this by using the symbol <strong>?</strong>. Type the following code <strong>directly into your console</strong> (not in your script):</p>
-<pre><code>## starting httpd help server ... done</code></pre>
+<pre class="r"><code>?filter</code></pre>
 <p>Note that this generates the help page for the <em>filter()</em> function. This is in the bottom right pane under the “Help” tab. You can do this with any function.<br />
 Another way to access the Help page is by going to Help, Search R Help on the top left. This will do the same thing- just type the function you are looking for.</p>
 </div>
