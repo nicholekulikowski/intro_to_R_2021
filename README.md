@@ -18,7 +18,8 @@ Brief description and the name of who is leading goes here with any links to ses
 Brief description and the name of who is leading goes here with any links to session materials
 
 ### Lesson 3 (9/23): Summarizing and Exporting Data
-Lead by Geoffrey Millard n/
+Lead by Geoffrey Millard
+
 This session uses a mix of live demonstrations and exercises to build off of skills developed in Lessons 1 and 2 to quickly summarize data into descriptive statistics.  Summary data and tables can be easily exported and shared as .csv files or .html.  If time allows, a brief demonstration of a couple baseR statistics will also be shown.
 
 ### Lesson 4 (9/23): Visualizing Data
