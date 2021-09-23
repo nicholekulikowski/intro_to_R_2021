@@ -134,8 +134,7 @@ For more on base R plotting, check out this page:
 
 ## Visualizing missingness with the `visdat` package
 
-```{r, echo = FALSE}
-#visdat::vis_miss(data_wide)
+```{r, echo = TRUE}
 visdat::vis_dat(data_wide, sort_type = FALSE)
 ```
 
@@ -469,7 +468,7 @@ Themes control all the components of a ggplot graphic that are not directly tied
 
 Here are some themes built in to `ggplot2`:
 
-```{r, echo = 1:2}
+```{r, echo = FALSE}
 knitr::include_graphics('./img/ggplot_themes.png')
 ```
 
