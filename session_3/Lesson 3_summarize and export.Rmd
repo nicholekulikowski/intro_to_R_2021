@@ -107,15 +107,39 @@ head(data1$Treatment)
 ```
 
 
-## Checking out already?
+## Checking out already (exporting)?
 
 Maybe this is all you needed to do and now you're sharing it with a colleague who is going to do everything else (wouldn't that be lovely!).  If you are working in an Rmarkdown, the html output copies into MS Office applications very nicely, or you can output to a word document.  
 
 If you want something systematic (eg. because your doing this with lots of datasets) the baseR `write.csv` function is pretty useful.  You do need to specify the dataframe and the filename and it will appear in your working directory.
 
-```{r}
-# write.csv(data1, 'Simplified_long_format.csv')
+```{r, eval=FALSE}
+write.csv(data1, 'Simplified_long_format.csv')
 ```
+
+Where did it go?  Right now, it went to the default working directory for your R session (aka. probably not where you really want it).
+
+You can probably see it in the files tab of the bottom right RStudio window.  The easiest way to change the working directory is by clicking Session > Set Working Directory > Choose Directory
+
+R will then conveniently print the code in the console, which you can copy and paste into your script (so you won't have repeat the annoying point and click procedure)
+
+```{r, eval=FALSE}
+setwd("~/Projects/intro_to_R_2021/session_4")
+```
+
+Now if we write.csv again it will appear in our working directory (which you can see in the RStudio files tab, click More > Go to working directory)
+
+## Get back in here (importing)!
+
+baseR works nicely for .csv files
+
+```{r eval=FALSE}
+imp <- read.csv('Simplified_long_format.csv')
+```
+
+There are packages for importing/exporting excel (eg. readxl) but I won't take the time to cover them here as they work fairly similarly to the baseR function.
+
+## Wide instead of Long data
 
 Maybe that colleague isn't happy with the long format data (analyte and result column).  Maybe they want a wide format where each analyte has it's own column.  What a pain in excel, but fear not!  `tidyverse` is here
 
