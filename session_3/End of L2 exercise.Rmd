@@ -42,9 +42,11 @@ post-treatment   | > 2014-4-1
 
 Here is some code to retrieve the data we want:
 
-```{r pull from NWIS, warning=FALSE}
+```{r pull from NWIS, warning=FALSE, eval=FALSE}
 #USGS and EPA dataset retrieval package
-# install.packages("dataRetrieval")
+install.packages("dataRetrieval")
+```
+```{r pull from NWIS2, warning=FALSE}
 library(dataRetrieval)
 
 #click on "Packages" tab to see functions available in the dataRetrival package
