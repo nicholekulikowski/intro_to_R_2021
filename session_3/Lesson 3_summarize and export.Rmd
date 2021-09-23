@@ -195,7 +195,7 @@ kable(Table1) %>%
 
 # Exercise break 2
 
-For each site, analyte, and month, generate the mean, standard deviation, maximum and minimum values, and the n-value?
+For each site, analyte, and month, generate the mean, standard deviation, maximum and minimum values, and the n-value.
 
 
 ```{r Solution Ex. 2, echo=FALSE, warning=FALSE, eval=FALSE}
@@ -239,6 +239,9 @@ reg1 <- lm(data=data_wide, Hg~DOC)
 reg1
 
 summary(reg1)
+
+broom::tidy(summary(reg1)) %>% kable() %>% kable_styling(bootstrap_options = c('striped', 'hover'), full_width = F)
+
 plot(reg1)
 ```
 
