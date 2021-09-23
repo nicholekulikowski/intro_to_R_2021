@@ -42,7 +42,7 @@ library(tidyverse)
 library(tidyselect)
 library(lubridate) # Part of tidyverse
 library(kableExtra)
-library(broom)
+library(broom) # part of tidyverse
 # time allowing
 library(multcomp)
 ```
@@ -53,7 +53,7 @@ We were importing actual data from NWIS and cleaning it up for today.
 
 ```{r importing, warning=FALSE}
 #USGS and EPA dataset retrieval package
-library(dataRetrieval) 
+# library(dataRetrieval) 
 #click on "Packages" tab to see functions available in the dataRetrival package
 
 #these are the USGS sites upstream from Honnedaga Lake, NY that we found in the browser
@@ -157,7 +157,7 @@ There are some things that work better with long data, so we can go the other wa
 
 Can you use data_wide and the `pivot_longer()` function to generate a long format df?
 
-```{r Ex break 1, echo=FALSE}
+```{r Ex break 1, echo=FALSE, eval=FALSE}
 data_wide %>% pivot_longer(colnames(data_wide)[5:8], names_to='Name', values_to='Value')
 ```
 
@@ -198,7 +198,7 @@ kable(Table1) %>%
 For each site, analyte, and month, generate the mean, standard deviation, maximum and minimum values, and the n-value?
 
 
-```{r Solution Ex. 2, echo=FALSE}
+```{r Solution Ex. 2, echo=FALSE, warning=FALSE, eval=FALSE}
 Table2 <- data1 %>% 
   group_by(Site, Analyte, month(Date)) %>% 
   summarize(average=mean(Result, na.rm=T), 
@@ -246,7 +246,7 @@ plot(reg1)
 
 Can you use the `cor()` function to generate a correlation between DOC and MeHg?
 
-```{r correlation, echo=FALSE}
+```{r correlation, echo=FALSE, eval=FALSE}
 cor(x=data_wide$DOC, y=data_wide$MeHg, use = 'complete.obs')
 ```
 
