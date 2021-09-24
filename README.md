@@ -11,22 +11,24 @@ This repository contains all materials for the biannual Introduction to R worksh
 Before Day 1, make sure to download the zipped folder that was sent via email (materials can also be found on Repo)
 
 ## Schedule
-### Lesson 1 (9/22): Welcome to R and RStudio
+### Session 1 (9/22): Welcome to R and RStudio
 Lead: Nichole Kulikowski
 
 This session starts from scratch and assumes no prior knowledge. We will learn how to launch RStudio, write basic code, and build a starter toolkit of R-skills that will carry us throughout the rest of the workshop.
 
-### Lesson 2 (9/22): Getting and Cleaning Data
+### Session 2 (9/22): Getting and Cleaning Data
 Lead: Sabrina Deeley
 
 This session goes over important R basics using base R, including: naming and creating columns, data checks, selecting for specific data within the larger dataset, combining datasets, and saving/importing excel and csvs into R.
 
-### Lesson 3 (9/23): Summarizing and Exporting Data
+### Session 3 (9/23): Summarizing and Exporting Data
 Lead: Geoffrey Millard
 
 This session uses a mix of live demonstrations/code along and exercises to build off of skills developed in Lessons 1 and 2 to quickly summarize data into descriptive statistics.  Summary data and tables can be easily exported and shared as .csv files or .html.  If time allows, a brief demonstration of a couple baseR statistics will also be shown.  In order to show how this might work with real data, we will be using some [previously published real data](https://link.springer.com/article/10.1007%2Fs10646-020-02224-1).
 
-### Lesson 4 (9/23): Visualizing Data
+[Session 3 commented code](https://htmlpreview.github.io/?https://github.com/nicholekulikowski/intro_to_R_2021/blob/main/session_3/Session_3_with_exercise_solutions.html)
+
+### Session 4 (9/23): Visualizing Data
 Lead: Marschall Furman
 
 This session will cover some techniques for data visualization in R, 
@@ -34,6 +36,8 @@ primarily with the ggplot2 package, using a water dataset.
 
 We will learn about the "layers" involved in making graphics, practice customizing 
 features of our plots with data, and learn how to adjust the formatting of our charts
+
+[session 4 commented code](https://htmlpreview.github.io/?https://github.com/nicholekulikowski/intro_to_R_2021/blob/main/session_4/lesson4_visualizing_data.html)
 
 ## Additional Resources
 Any links to fact sheets and other sites can go here
