@@ -37,7 +37,7 @@ primarily with the ggplot2 package, using a water dataset.
 We will learn about the "layers" involved in making graphics, practice customizing 
 features of our plots with data, and learn how to adjust the formatting of our charts
 
-[session 4 commented code](https://htmlpreview.github.io/?https://github.com/nicholekulikowski/intro_to_R_2021/blob/main/session_4/lesson4_visualizing_data.html)
+[Session 4 commented code](https://htmlpreview.github.io/?https://github.com/nicholekulikowski/intro_to_R_2021/blob/main/session_4/lesson4_visualizing_data.html)
 
 ## Additional Resources
 Any links to fact sheets and other sites can go here
